@@ -1,0 +1,11 @@
+<%= rails_env %>:
+  adapter: postgresql
+  username: <%= postgresql_user %>
+  password: <%= postgresql_password %>
+  database: <%= postgresql_database %>
+  encoding: utf8
+  min_messages: warning
+  pool: 5
+  timeout: 5000
+  host: <%= postgresql_host %>
+  port: <%= postgresql_port %>
