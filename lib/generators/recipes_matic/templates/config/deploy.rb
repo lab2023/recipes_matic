@@ -21,7 +21,7 @@ set :default_stage, 'production'
 default_run_options[:pty] = true
 
 set :application, 'application_name'
-set :user, 'server user name' # We use deployer
+set :user, 'deployer' # We use deployer
 set :deploy_to, "/home/#{user}/apps/#{application}"
 
 set :deploy_via, :remote_cache

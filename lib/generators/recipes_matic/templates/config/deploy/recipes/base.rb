@@ -11,19 +11,17 @@ end
 namespace :deploy do
   desc 'Install dependencies library for rails'
   task :install do
-    #
-
-    run "#{sudo} apt-get -y update && #{sudo} apt-get -y upgrade"
+    #run "#{sudo} apt-get -y update && #{sudo} apt-get -y upgrade"
 
     run "#{sudo} apt-get -y install python-software-properties && #{sudo} apt-get -y install software-properties-common"
 
-    run "export LANGUAGE=en_US.UTF-8 && export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8 && locale-gen en_US.UTF-8 && #{sudo} dpkg-reconfigure locales"
+    #run "export LANGUAGE=en_US.UTF-8 && export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8 && locale-gen en_US.UTF-8 && #{sudo} dpkg-reconfigure locales"
 
     #run "bash <(curl -s https://gist.github.com/muhammetdilek/7138112/raw/c9af34bbda8df7ebf7f30d5daab18b8bc80326c6/removepackage.sh)"
 
     run "#{sudo} apt-get -y install htop"
 
-    run "#{sudo} apt-get -y install curl git-core"
+    #run "#{sudo} apt-get -y install curl git-core"
 
     #run "ssh-keygen -t rsa -C 'user@example.com' << EOF \n \n \n \n"
 
