@@ -20,7 +20,7 @@ namespace :nginx do
     sudo "ln -nfs #{shared_path}/config/nginx.#{rails_env}.conf /etc/nginx/sites-enabled/#{application}"
 
     puts 'Removing /etc/nginx/sites-enabled/default'
-    sudo 'rm /etc/nginx/sites-enabled/default'
+    sudo 'rm -f /etc/nginx/sites-enabled/default'
   end
 
   %w[start stop restart reload].each do |command|
