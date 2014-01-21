@@ -10,7 +10,7 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -63,4 +63,3 @@ Finish...
 ## License
 
 Copyright 2013 lab2023 – internet technologies
-

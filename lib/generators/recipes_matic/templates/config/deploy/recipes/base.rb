@@ -62,11 +62,6 @@ namespace :deploy do
   task :install_bundler, :roles => :app do
     run 'type -P bundle &>/dev/null || { gem install bundler --no-rdoc --no-ri; }'
   end
-
-  desc 'Resque QUEUE Start'
-  task :resque_setup, :roles => :db do
-    run "cd #{release_path} && resque:work QUEUE='*'"
-  end
 end
 
 before 'deploy:setup', 'deploy:install'
