@@ -62,4 +62,4 @@ Finish...
 
 ## License
 
-Copyright 2013 lab2023 – information technologies
+Copyright 2014 lab2023 – information technologies
