@@ -20,20 +20,40 @@ end
 namespace :deploy do
   before 'deploy', 'backup:perform'
   before 'deploy', 'maintenance:enable'
+  after 'deploy', 'deploy:cleanup'
+  after 'deploy', 'deploy:cleanup_assets'
   after 'deploy', 'unicorn:stop'
   after 'unicorn:stop', 'unicorn:start'
   after 'unicorn:start', 'maintenance:disable'
-  after 'deploy', 'deploy:cleanup'
-  after 'deploy', 'deploy:cleanup_assets'
 
-  desc 'Prepare environment'
+  desc <<-DESC
+    Prepare environment for first deploy. You can use this command for first deploy
+    This command invokes
+    - postgresql:create_database_file
+    - deploy(starting updating publishing finishing)
+    - postgresql:setup
+    - nginx:setup
+    - unicorn:setup
+    - bundler:install
+    - nginx:restart
+    - deploy
+  DESC
   task :prepare do
     puts 'prepare'
+    invoke 'postgresql:create_database_file'
+    %w{starting updating publishing finishing}.each do |task|
+      invoke "deploy:#{task}"
+    end
     invoke 'postgresql:setup'
     invoke 'nginx:setup'
     invoke 'unicorn:setup'
+    invoke 'bundler:install'
+    invoke 'nginx:restart'
+    invoke 'unicorn:stop'
+    invoke 'deploy'
     # Remove comments if you are using monit
     # invoke 'monit:install'
     # invoke 'monit:setup'
   end
+
 end
