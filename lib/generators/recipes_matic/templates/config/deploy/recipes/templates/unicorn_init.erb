@@ -3,10 +3,10 @@ set -e
 
 # Feel free to change any of the following variables for your app:
 TIMEOUT=${TIMEOUT-60}
-APP_ROOT=<%= current_path %>
-PID=<%= unicorn_pid %>
-CMD="cd $APP_ROOT; bundle exec unicorn -D -c <%= unicorn_config %> -E <%= rails_env %>"
-AS_USER=<%= unicorn_user %>
+APP_ROOT=<%= fetch(:current_path) %>
+PID=<%= fetch(:unicorn_pid) %>
+CMD="cd $APP_ROOT; <%= fetch(:run_path) %>bundle exec unicorn -D -c <%= fetch(:unicorn_config) %> -E <%= fetch(:rails_env) %>"
+AS_USER=<%= fetch(:unicorn_user) %>
 set -u
 
 OLD_PIN="$PID.oldbin"
@@ -41,7 +41,7 @@ force-stop)
   echo >&2 "Not running"
   ;;
 restart|reload)
-  sig USR2 && echo reloaded OK && exit 0
+  sig HUP && echo reloaded OK && exit 0
   echo >&2 "Couldn't reload, starting '$CMD' instead"
   run "$CMD"
   ;;

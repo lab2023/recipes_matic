@@ -1,3 +1,3 @@
-check process <%= application %>_unicorn with pidfile <%= unicorn_pid %>
-  start program = "/etc/init.d/unicorn_<%= application %> start"
-  stop program = "/etc/init.d/unicorn_<%= application %> stop"
+check process <%= fetch(:application) %>_unicorn with pidfile <%= fetch(:unicorn_pid) %>
+  start program = "/etc/init.d/unicorn_<%= fetch(:application) %> start"
+  stop program = "/etc/init.d/unicorn_<%= fetch(:application) %> stop"
