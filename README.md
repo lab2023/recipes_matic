@@ -41,9 +41,11 @@ rails g recipes_matic:install
 ```
 
 Now edit `config/deploy.rb`, `config/deploy/recipes/base.rb`
-Add this line to end of `config/deploy.rb` file
-`load 'config/deploy/recipes/base.rb'`
 
+Add this line to end of `config/deploy.rb` file
+```ruby 
+load 'config/deploy/recipes/base.rb'
+```
 
 If you want to prepare your server, run the following command
 For production :
