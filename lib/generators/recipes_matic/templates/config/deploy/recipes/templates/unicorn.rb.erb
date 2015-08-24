@@ -48,6 +48,7 @@ after_fork do |server, worker|
     rescue => e
         if RAILS_ENV == 'development'
             STDERR.puts "couldn't change user, oh well"
+            system("echo 'couldn't change user, oh well'")
         else
             raise e
         end
