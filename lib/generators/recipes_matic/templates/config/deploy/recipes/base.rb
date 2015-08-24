@@ -4,7 +4,8 @@ set :postgresql_pid, "/var/run/postgresql/9.3-main.pid"
 set :unicorn_pid, "#{fetch(:current_path)}/tmp/pids/unicorn.pid"
 set :run_path, '$HOME/.rbenv/shims/'
 set :maintenance_template_path, File.expand_path('../templates/maintenance.html.erb', __FILE__)
-set :local_user_group, 'deploy' # local user group on server. We use deploy group
+# local user group on server. We use deploy group
+set :local_user_group, fetch(:local_user)
 
 # Use template
 def template(from, to)
