@@ -2,6 +2,7 @@ namespace :unicorn do
   desc 'Unicorn setup'
   task :setup do
     set :unicorn_user, fetch(:local_user)
+    set :unicorn_user_group, fetch(:local_user_group)
     set :unicorn_config, "#{fetch(:shared_path)}/config/unicorn.rb"
     set :unicorn_log, "#{fetch(:shared_path)}/log/unicorn.log"
     set :unicorn_workers, 2
@@ -21,6 +22,13 @@ namespace :unicorn do
       on roles(:app), in: :groups, limit: 3, wait: 4 do
         execute "/etc/init.d/unicorn_#{fetch(:application)} #{command}"
       end
+    end
+  end
+
+  desc "Unicorn server upgrade."
+  task :upgrade do
+    on roles(:app), in: :groups, limit: 3, wait: 1 do
+      execute "/etc/init.d/unicorn_#{fetch(:application)} upgrade"
     end
   end
 end

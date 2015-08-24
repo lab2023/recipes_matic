@@ -4,6 +4,7 @@ set :postgresql_pid, "/var/run/postgresql/9.3-main.pid"
 set :unicorn_pid, "#{fetch(:current_path)}/tmp/pids/unicorn.pid"
 set :run_path, '$HOME/.rbenv/shims/'
 set :maintenance_template_path, File.expand_path('../templates/maintenance.html.erb', __FILE__)
+set :local_user_group, 'deploy' # local user group on server. We use deploy group
 
 # Use template
 def template(from, to)
@@ -18,13 +19,23 @@ def gem_execute(command)
 end
 
 namespace :deploy do
+  ## If you want to use maintenance mode during deploy, use Scenario 1
+  ## Scenario 1 with maintenance mode
+  # before 'deploy', 'backup:perform'
+  # before 'deploy', 'maintenance:enable'
+  # after 'deploy', 'deploy:cleanup'
+  # after 'deploy', 'deploy:cleanup_assets'
+  # after 'deploy', 'unicorn:stop'
+  # after 'unicorn:stop', 'unicorn:start'
+  # after 'unicorn:start', 'maintenance:disable'
+
+  ## We use default zero down time
+  ## If you want to use zero down time deployment use this Scenario
+  ## Scenario 2 without maintenance mode
   before 'deploy', 'backup:perform'
-  before 'deploy', 'maintenance:enable'
   after 'deploy', 'deploy:cleanup'
   after 'deploy', 'deploy:cleanup_assets'
-  after 'deploy', 'unicorn:stop'
-  after 'unicorn:stop', 'unicorn:start'
-  after 'unicorn:start', 'maintenance:disable'
+  after 'deploy', 'unicorn:upgrade'
 
   desc <<-DESC
     Prepare environment for first deploy. You can use this command for first deploy
@@ -49,9 +60,8 @@ namespace :deploy do
     invoke 'unicorn:setup'
     invoke 'bundler:install'
     invoke 'nginx:restart'
-    invoke 'unicorn:stop'
     invoke 'deploy'
-    # Remove comments if you are using monit
+    ## Remove comments if you are using monit
     # invoke 'monit:install'
     # invoke 'monit:setup'
   end
