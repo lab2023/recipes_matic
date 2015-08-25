@@ -1,10 +1,10 @@
-working_directory "<%= current_path %>"
-pid "<%= unicorn_pid %>"
-stderr_path "<%= unicorn_log %>"
-stdout_path "<%= unicorn_log %>"
+working_directory "<%= fetch(:current_path) %>"
+pid "<%= fetch(:unicorn_pid) %>"
+stderr_path "<%= fetch(:unicorn_log) %>"
+stdout_path "<%= fetch(:unicorn_log) %>"
 
-listen "/tmp/unicorn.<%= application %>.sock"
-worker_processes <%= unicorn_workers %>
+listen "/tmp/unicorn.<%= fetch(:application) %>.sock"
+worker_processes <%= fetch(:unicorn_workers) %>
 timeout 30
 
 preload_app true
@@ -33,4 +33,24 @@ after_fork do |server, worker|
     end
     child_pid = server.config[:pid].sub(".pid", ".#{worker.nr}.pid")
     system("echo #{Process.pid} > #{child_pid}")
+
+    begin
+        uid, gid = Process.euid, Process.egid
+        user, group = '<%= fetch(:unicorn_user) %>', '<%= fetch(:unicorn_user_group) %>'
+        target_uid = Etc.getpwnam(user).uid
+        target_gid = Etc.getgrnam(group).gid
+        worker.tmp.chown(target_uid, target_gid)
+        if uid != target_uid || gid != target_gid
+            Process.initgroups(user, target_gid)
+            Process::GID.change_privilege(target_gid)
+            Process::UID.change_privilege(target_uid)
+        end
+    rescue => e
+        if RAILS_ENV == 'development'
+            STDERR.puts "couldn't change user, oh well"
+            system("echo 'couldn't change user, oh well'")
+        else
+            raise e
+        end
+    end
 end

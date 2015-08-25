@@ -1,4 +1,4 @@
-Backup::Model.new(:<%= application %>, '<%= application %> backup') do
+Backup::Model.new(:<%= fetch(:application) %>, '<%= fetch(:application) %> backup') do
     ##
     # Split [Splitter]
     #
@@ -12,11 +12,11 @@ Backup::Model.new(:<%= application %>, '<%= application %> backup') do
     #
     database PostgreSQL do |db|
         # To dump all databases, set `db.name = :all` (or leave blank)
-        db.name               = "<%= postgresql_database %>"
-        db.username           = "<%= postgresql_user %>"
-        db.password           = "<%= postgresql_password %>"
-        db.host               = "<%= postgresql_host %>"
-        db.port               = "<%= postgresql_port %>"
+        db.name               = "<%= "#{fetch(:postgresql_database)}_#{fetch(:rails_env)}" %>"
+        db.username           = "<%= fetch(:postgresql_user) %>"
+        db.password           = "<%= fetch(:postgresql_password) %>"
+        db.host               = "<%= fetch(:postgresql_host) %>"
+        db.port               = "<%= fetch(:postgresql_port) %>"
     end
 
     ##
@@ -31,5 +31,22 @@ Backup::Model.new(:<%= application %>, '<%= application %> backup') do
     # Gzip [Compressor]
     #
     compress_with Gzip
+
+    ##
+    # Hipchat [Notifier]
+    #
+=begin
+    notify_by Hipchat do |hipchat|
+        hipchat.on_success      = true
+        hipchat.on_warning      = true
+        hipchat.on_failure      = true
+        hipchat.token           = "change_token"
+        hipchat.from            = "<%= fetch(:application) %> Backup"
+        hipchat.rooms_notified  = ["backup"]
+        hipchat.success_color   = "green"
+        hipchat.warning_color   = "yellow"
+        hipchat.failure_color   = "red"
+    end
+=end
 
 end
