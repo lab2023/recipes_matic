@@ -8,7 +8,7 @@ module RecipesMatic
 
       def copy_deploy_file
         directory 'config/deploy', 'config/deploy'
-        copy_file 'config/deploy.rb', 'config/deploy.rb'
+        directory 'lib/capistrano/tasks', 'lib/capistrano/tasks'
       end
     end
   end

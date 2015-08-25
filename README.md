@@ -21,30 +21,37 @@ Or install it yourself as:
 Add following gem to Gemfile
 
 ```ruby
-gem 'capistrano', '~> 2.15.5'
-gem 'capistrano-ext', '~> 1.2.1'
-gem 'unicorn', '~> 4.6.3'
+gem 'capistrano', '~> 3.4.0'
+gem 'unicorn', '~> 4.9.0'
+group :development do
+  gem 'capistrano-rails',   '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
+  gem 'sshkit-sudo', require: false
+  gem 'capistrano-maintenance', '~> 1.0', require: false
+  gem 'recipes_matic'
+end
 ```
 
 And then execute
 
 ```ruby
 bundle install
-capify .
+bundle exec capistrano install
 rails g recipes_matic:install
 ```
 
-Now edit `config/deploy.rb`, `config/deploy/staging.rb` and `config/deploy/production.rb`
+Now edit `config/deploy.rb`, `config/deploy/recipes/base.rb`
 
-If install server package for ruby and rails run the following command
-`cap deploy:install`
+Add this line to end of `config/deploy.rb` file
+```ruby 
+load 'config/deploy/recipes/base.rb'
+```
 
-and execute
-
-`cap staging deploy:setup`
-`cap staging deploy:cold`
-
-Finish...
+If you want to prepare your server, run the following command
+For production :
+`bundle exec cap production deploy:prepare`
+For staging :
+`bundle exec cap staging deploy:prepare`
 
 ## Contributing
 
@@ -64,4 +71,4 @@ Finish...
 
 ## License
 
-Copyright 2014 lab2023 – information technologies
+Copyright © 2013-2015 [lab2023 - information technologies](http://lab2023.com)
