@@ -71,4 +71,4 @@ For staging :
 
 ## License
 
-Copyright 2014 lab2023 – information technologies
+Copyright © 2013-2015 [lab2023 - information technologies](http://lab2023.com)
