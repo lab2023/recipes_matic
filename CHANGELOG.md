@@ -1,5 +1,9 @@
 
 #### [Current]
+
+
+#### v1.2.0
+ * [e623c33](../../commit/e623c33) - __(Tayfun Öziş ERİKAN)__ Bump version v1.2.0
  * [ea6110e](../../commit/ea6110e) - __(Tayfun Öziş ERİKAN)__ Improvements were done - LICENSE file was updated - README was updated - Gemspecs were updated
  * [fcec848](../../commit/fcec848) - __(Ismail Akbudak)__ add maintenance mode for zero down time deploy
  * [e6eec71](../../commit/e6eec71) - __(Ismail Akbudak)__ improve
