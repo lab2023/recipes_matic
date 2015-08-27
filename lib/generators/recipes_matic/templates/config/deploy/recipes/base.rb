@@ -45,7 +45,7 @@ namespace :deploy do
   desc <<-DESC
     Prepare environment for first deploy. You can use this command for first deploy
     This command invokes
-    - postgresql:create_database_file
+    - db:create_file
     - deploy(starting updating publishing finishing)
     - postgresql:setup
     - nginx:setup
@@ -56,7 +56,7 @@ namespace :deploy do
   DESC
   task :prepare do
     puts 'prepare'
-    invoke 'postgresql:create_database_file'
+    invoke 'db:create_file'
     %w{starting updating publishing finishing}.each do |task|
       invoke "deploy:#{task}"
     end
