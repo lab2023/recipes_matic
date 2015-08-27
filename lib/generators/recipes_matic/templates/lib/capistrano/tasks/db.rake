@@ -3,7 +3,7 @@ namespace :db do
   task :setup do
     on roles(:app) do
       execute "mkdir -p #{fetch(:shared_path)}/config"
-      template 'database.yml.erb', "#{shared_path}/config/database.yml"
+      template 'database.yml.erb', "#{fetch(:shared_path)}/config/database.yml"
     end
   end
   desc 'Run rake db:seed.'
