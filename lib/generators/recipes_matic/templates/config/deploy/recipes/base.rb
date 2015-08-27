@@ -2,6 +2,8 @@ set :shared_path, "#{fetch(:deploy_to)}/shared"
 set :current_path, "#{fetch(:deploy_to)}/current"
 set :postgresql_pid, "/var/run/postgresql/9.3-main.pid"
 set :unicorn_pid, "#{fetch(:current_path)}/tmp/pids/unicorn.pid"
+set :postgresql_host, 'localhost'
+set :postgresql_port, '5432'
 set :run_path, '$HOME/.rbenv/shims/'
 set :maintenance_template_path, File.expand_path('../templates/maintenance.html.erb', __FILE__)
 # local user group on server. We use deploy group

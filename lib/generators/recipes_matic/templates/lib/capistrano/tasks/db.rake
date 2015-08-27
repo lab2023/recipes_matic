@@ -16,4 +16,16 @@ namespace :db do
       end
     end
   end
+  desc 'Create empty database file'
+  task :create_file do
+    on roles(:app) do
+      execute :mkdir, '-p', "#{fetch(:shared_path)}/config"
+      if test("[ -f #{fetch(:shared_path)}/config/database.yml ]")
+        debug "#{fetch(:shared_path)}/config/database.yml file is exist"
+      else
+        info "#{fetch(:shared_path)}/config/database.yml file does not exist, and it has been created"
+        template 'database.yml.erb', "#{fetch(:shared_path)}/config/database.yml"
+      end
+    end
+  end
 end
