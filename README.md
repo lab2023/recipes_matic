@@ -47,6 +47,7 @@ Add this line to end of `config/deploy.rb` file
 load 'config/deploy/recipes/base.rb'
 ```
 Also look our [example config/deploy.rb file](example_deploy.rb)
+[example Capfile file](example_Capfile)
 
 If you want to prepare your server, run the following command
 
