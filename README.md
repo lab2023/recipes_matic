@@ -46,10 +46,13 @@ Add this line to end of `config/deploy.rb` file
 ```ruby 
 load 'config/deploy/recipes/base.rb'
 ```
+Also look our [example config/deploy.rb file]( 'https://github.com/lab2023/recipes_matic/blob/feature/improvement/example_deploy.rb')
 
 If you want to prepare your server, run the following command
+
 For production :
 `bundle exec cap production deploy:prepare`
+
 For staging :
 `bundle exec cap staging deploy:prepare`
 
