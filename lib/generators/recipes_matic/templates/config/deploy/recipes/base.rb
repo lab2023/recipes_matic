@@ -40,7 +40,9 @@ namespace :deploy do
   after 'deploy', 'deploy:cleanup_assets'
   before 'unicorn:upgrade', 'maintenance:enable'
   after 'deploy', 'unicorn:upgrade'
-  after 'unicorn:upgrade', 'maintenance:disable'
+  after 'unicorn:upgrade', 'unicorn:stop'
+  after 'unicorn:stop', 'unicorn:start'
+  after 'unicorn:start', 'maintenance:disable'
 
   desc <<-DESC
     Prepare environment for first deploy. You can use this command for first deploy
