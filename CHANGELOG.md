@@ -1,8 +1,18 @@
 
 #### [Current]
-
-
-#### v1.2.0
+ * [f3d81e0](../../commit/f3d81e0) - __(Ismail Akbudak)__ update version v1.3.0
+ * [9e3f191](../../commit/9e3f191) - __(Ismail Akbudak)__ fix deploy logic
+ * [d1dfd72](../../commit/d1dfd72) - __(İsmail)__ Rename example_Capfile.rb to example_Capfile
+ * [5b8ee1b](../../commit/5b8ee1b) - __(İsmail)__ Update README.md
+ * [5e1023b](../../commit/5e1023b) - __(İsmail)__ Create example_Capfile.rb
+ * [be021d1](../../commit/be021d1) - __(İsmail)__ Update README.md
+ * [1097dfd](../../commit/1097dfd) - __(İsmail)__ Update README.md
+ * [9995d5a](../../commit/9995d5a) - __(İsmail)__ Create example_deploy.rb
+ * [01812de](../../commit/01812de) - __(Ismail Akbudak)__ add upload directories task
+ * [a3694f9](../../commit/a3694f9) - __(Ismail Akbudak)__ fix error
+ * [711fbbe](../../commit/711fbbe) - __(Ismail Akbudak)__ improve postgresql tasks
+ * [0ab83a1](../../commit/0ab83a1) - __(Ismail Akbudak)__ add rails tasks
+ * [6580920](../../commit/6580920) - __(Tayfun Öziş ERİKAN)__ Development dependency problem was solved
  * [e623c33](../../commit/e623c33) - __(Tayfun Öziş ERİKAN)__ Bump version v1.2.0
  * [ea6110e](../../commit/ea6110e) - __(Tayfun Öziş ERİKAN)__ Improvements were done - LICENSE file was updated - README was updated - Gemspecs were updated
  * [fcec848](../../commit/fcec848) - __(Ismail Akbudak)__ add maintenance mode for zero down time deploy
