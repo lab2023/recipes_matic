@@ -3,29 +3,39 @@ namespace :postgresql do
   desc 'Setup postgresql for application'
   task :setup do
     # Ask information
-    ask :user, "Postgresql username"
-    ask :password, "Postgresql password for #{fetch(:user)}"
-    ask :database, "Postgresql database"
-
-    # Set variables
-    set :postgresql_host, 'localhost'
-    set :postgresql_port, '5432'
-    set :postgresql_user, fetch(:user)
-    set :postgresql_database, fetch(:database)
-    set :postgresql_password, fetch(:password)
+    ask :postgresql_user, "Postgresql username"
+    puts fetch(:postgresql_user)
+    ask :postgresql_password, "Postgresql password for #{fetch(:postgresql_user)}"
+    puts fetch(:postgresql_password)
+    ask :postgresql_database, "Postgresql database"
+    puts fetch(:postgresql_database)
+    ask :create_db_user, "Create database user? Yes(y) or No(n)"
+    puts fetch(:create_db_user)
+    ask :create_db, "Create database? Yes(y) or No(n)"
+    puts fetch(:create_db)
+    ask :use_hipchat, "Do you want to add hipchat token? Yes(y) or No(n)"
+    puts fetch(:use_hipchat)
+    if fetch(:use_hipchat).casecmp('y') == 0
+      ask :hipchat_token, "Hipchat token"
+      puts fetch(:hipchat_token)
+    end
 
     # Run queries
     on roles(:app) do
-      puts 'Creating user with password'
-      # Create database user
-      sudo %Q{sudo -u postgres psql -c "create user #{fetch(:postgresql_user)} with password '#{fetch(:postgresql_password)}';"}
-      puts 'Creating database with owner'
-      sudo %Q{sudo -u postgres psql -c "create database "#{fetch(:postgresql_database)}_#{fetch(:rails_env)}" owner #{fetch(:postgresql_user)} encoding 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TEMPLATE template0;"}
 
+      if fetch(:create_db_user).casecmp('y') == 0
+        puts 'Creating user with password'
+        # Create database user
+        sudo %Q{sudo -u postgres psql -c "create user #{fetch(:postgresql_user)} with password '#{fetch(:postgresql_password)}';"}
+      end
+      if fetch(:create_db).casecmp('y') == 0
+        puts 'Creating database with owner'
+        sudo %Q{sudo -u postgres psql -c "create database "#{fetch(:postgresql_database)}_#{fetch(:rails_env)}" owner #{fetch(:postgresql_user)} encoding 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TEMPLATE template0;"}
+      end
       puts 'Creating database.yml.'
       # Configure database settings
       execute "mkdir -p #{fetch(:shared_path)}/config"
-      template 'database.yml.erb', "#{shared_path}/config/database.yml"
+      template 'database.yml.erb', "#{fetch(:shared_path)}/config/database.yml"
 
       puts 'Creating backup model.'
       # Check model is exist
@@ -47,19 +57,6 @@ namespace :postgresql do
     on roles(:app) do
       puts 'Postgresql restarting'
       sudo 'service postgresql restart'
-    end
-  end
-
-  # Create database file on start
-  task :create_database_file do
-    on roles(:app) do
-      execute :mkdir, '-p', "#{fetch(:shared_path)}/config"
-      if test("[ -f #{fetch(:shared_path)}/config/database.yml ]")
-        debug "#{fetch(:shared_path)}/config/database.yml file is exist"
-      else
-        info "#{fetch(:shared_path)}/config/database.yml file does not exist, and it has been created"
-        template 'database.yml.erb', "#{shared_path}/config/database.yml"
-      end
     end
   end
 

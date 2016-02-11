@@ -1,4 +1,4 @@
-Backup::Model.new(:<%= fetch(:application) %>, '<%= fetch(:application) %> backup') do
+Backup::Model.new(:<%= fetch(:application) %>, '<%= fetch(:application)  %> - <% fetch(:rails_env) %> backup') do
     ##
     # Split [Splitter]
     #
@@ -35,18 +35,23 @@ Backup::Model.new(:<%= fetch(:application) %>, '<%= fetch(:application) %> backu
     ##
     # Hipchat [Notifier]
     #
+<% if fetch(:use_hipchat).casecmp('y') != 0 %>
 =begin
+<% end %>
     notify_by Hipchat do |hipchat|
         hipchat.on_success      = true
         hipchat.on_warning      = true
         hipchat.on_failure      = true
-        hipchat.token           = "change_token"
-        hipchat.from            = "<%= fetch(:application) %> Backup"
+        hipchat.token           = "<%= fetch(:hipchat_token) %>"
+        # get first 15 character of application, there is an error after 15 length
+        hipchat.from            = "<%= fetch(:application)[0..14] %>"
         hipchat.rooms_notified  = ["backup"]
         hipchat.success_color   = "green"
         hipchat.warning_color   = "yellow"
         hipchat.failure_color   = "red"
     end
+<%  if fetch(:use_hipchat).casecmp('y') != 0 %>
 =end
+<% end %>
 
 end

@@ -2,6 +2,8 @@ set :shared_path, "#{fetch(:deploy_to)}/shared"
 set :current_path, "#{fetch(:deploy_to)}/current"
 set :postgresql_pid, "/var/run/postgresql/9.3-main.pid"
 set :unicorn_pid, "#{fetch(:current_path)}/tmp/pids/unicorn.pid"
+set :postgresql_host, 'localhost'
+set :postgresql_port, '5432'
 set :run_path, '$HOME/.rbenv/shims/'
 set :maintenance_template_path, File.expand_path('../templates/maintenance.html.erb', __FILE__)
 # local user group on server. We use deploy group
@@ -38,12 +40,14 @@ namespace :deploy do
   after 'deploy', 'deploy:cleanup_assets'
   before 'unicorn:upgrade', 'maintenance:enable'
   after 'deploy', 'unicorn:upgrade'
-  after 'unicorn:upgrade', 'maintenance:disable'
+  after 'unicorn:upgrade', 'unicorn:stop'
+  after 'unicorn:stop', 'unicorn:start'
+  after 'unicorn:start', 'maintenance:disable'
 
   desc <<-DESC
     Prepare environment for first deploy. You can use this command for first deploy
     This command invokes
-    - postgresql:create_database_file
+    - db:create_file
     - deploy(starting updating publishing finishing)
     - postgresql:setup
     - nginx:setup
@@ -54,7 +58,7 @@ namespace :deploy do
   DESC
   task :prepare do
     puts 'prepare'
-    invoke 'postgresql:create_database_file'
+    invoke 'db:create_file'
     %w{starting updating publishing finishing}.each do |task|
       invoke "deploy:#{task}"
     end
